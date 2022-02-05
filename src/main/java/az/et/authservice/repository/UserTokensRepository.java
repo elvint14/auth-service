@@ -11,7 +11,7 @@ public interface UserTokensRepository extends JpaRepository<UserTokensEntity, Lo
 
     Optional<UserTokensEntity> findByUserId(Long userId);
 
-    Boolean existsUserTokensEntityByUserAndAccessToken(UserEntity user, String token);
+    boolean existsUserTokensEntityByAccessTokenAndUser(String token, UserEntity user);
 
     List<UserTokensEntity> findAllByUserId(Long userId);
 

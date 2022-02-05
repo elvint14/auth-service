@@ -40,7 +40,7 @@ public class UserEntity implements Serializable {
     @Column(name = "full_name")
     private String fullName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

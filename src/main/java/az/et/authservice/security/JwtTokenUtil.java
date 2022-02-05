@@ -34,6 +34,9 @@ public class JwtTokenUtil {
     @Value("${jwt.token.public}")
     private String publicKey;
 
+    @Value("${jwt.token.access-token-validity-time}")
+    private Integer accessTokenValidityTime;
+
     private final JwtUserDetailsService jwtUserDetailsService;
 
     public String getUsernameFromToken(String token) {
@@ -56,11 +59,11 @@ public class JwtTokenUtil {
                         .collect(Collectors.toList())
         );
 
-        Date now = new Date();
-        int accessTokenTime = 3600000;
-        Date expiration = new Date(now.getTime() + accessTokenTime);
+        Date now = new Date(System.currentTimeMillis());
+        Date expiration = new Date(now.getTime() + accessTokenValidityTime);
 
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
@@ -80,11 +83,10 @@ public class JwtTokenUtil {
                         .collect(Collectors.toList())
         );
 
-        Date now = new Date();
-        int refreshTokenTime = 86400000;
+        Date now = new Date(System.currentTimeMillis());
         Date expiration = rememberMe
-                ? new Date(now.getTime() + refreshTokenTime * 90L)
-                : new Date(now.getTime() + refreshTokenTime);
+                ? new Date(now.getTime() + accessTokenValidityTime * 90L)
+                : new Date(now.getTime() + accessTokenValidityTime);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -95,7 +97,7 @@ public class JwtTokenUtil {
     }
 
     public boolean validateToken(String token) {
-        return !isTokenExpired(token); //may be different exceptions
+        return !isTokenExpired(token);
     }
 
     public Authentication getAuthentication(String token) {
@@ -105,6 +107,7 @@ public class JwtTokenUtil {
 
     private boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
+        System.out.println(expiration.toString());
         return expiration.before(new Date());
     }
 
