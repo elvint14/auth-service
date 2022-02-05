@@ -6,6 +6,8 @@ import az.et.authservice.dto.request.RequestCreateUserDto;
 import az.et.authservice.entity.RoleEntity;
 import az.et.authservice.entity.UserEntity;
 import az.et.authservice.exception.BaseException;
+import az.et.authservice.security.CustomJwtUserDetailsFactory;
+import az.et.authservice.security.JwtUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -42,11 +44,17 @@ public class UserBusinessService {
 
     @SneakyThrows
     public String validate() {
+        final JwtUserDetails userDetails = (JwtUserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
         return objectMapper.writeValueAsString(
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                        .getPrincipal()
+                CustomJwtUserDetailsFactory.of(
+                        userDetails.getId(),
+                        userDetails.getUsername(),
+                        userDetails.getPassword(),
+                        userDetails.getAuthorities()
+                )
         );
     }
 }
