@@ -8,6 +8,8 @@ import az.et.authservice.entity.UserEntity;
 import az.et.authservice.exception.BaseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,13 @@ public class UserBusinessService {
                 .build();
     }
 
+    @SneakyThrows
     public String validate() {
-        return null;
+        return objectMapper.writeValueAsString(
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal()
+        );
     }
 }

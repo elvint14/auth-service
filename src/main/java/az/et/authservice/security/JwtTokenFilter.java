@@ -1,7 +1,7 @@
 package az.et.authservice.security;
 
-import az.et.authservice.entity.UserEntity;
 import az.et.authservice.constant.ErrorEnum;
+import az.et.authservice.entity.UserEntity;
 import az.et.authservice.exception.BaseException;
 import az.et.authservice.repository.UserRepository;
 import az.et.authservice.repository.UserTokensRepository;
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -51,10 +50,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private boolean checkAccessTokenIsExist(String token, UserEntity user) {
-        return userTokensRepository.findAllByUserId(user.getId())
-                .stream()
-                .anyMatch(userLogin ->
-                        userLogin.getAccessToken().equals(DigestUtils.md5DigestAsHex(token.getBytes()))
-                );
+//        return userTokensRepository.findAllByUserId(user.getId())
+//                .stream()
+//                .anyMatch(userLogin ->
+//                        userLogin.getAccessToken().equals(DigestUtils.md5DigestAsHex(token.getBytes()))
+//                );
+        return userTokensRepository.existsUserTokensEntityByUserAndAccessToken(
+                user,
+                token
+        );
     }
 }
