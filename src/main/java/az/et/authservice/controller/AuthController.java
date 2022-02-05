@@ -5,7 +5,7 @@ import az.et.authservice.dto.request.RequestCreateUserDto;
 import az.et.authservice.dto.response.BaseResponse;
 import az.et.authservice.dto.response.ResponseTokenDto;
 import az.et.authservice.service.AuthBusinessService;
-import az.et.authservice.service.functional.UserBusinessService;
+import az.et.authservice.service.UserBusinessService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
