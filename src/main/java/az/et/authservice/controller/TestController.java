@@ -13,7 +13,7 @@ public class TestController {
 
     @GetMapping
     public String test() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println((JwtUserDetails) authentication.getPrincipal());
         System.out.println(authentication.getAuthorities().toString());
         return "ok";
