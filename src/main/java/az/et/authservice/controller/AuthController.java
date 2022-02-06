@@ -4,6 +4,7 @@ import az.et.authservice.dto.request.LoginRequestDto;
 import az.et.authservice.dto.request.RequestCreateUserDto;
 import az.et.authservice.dto.response.BaseResponse;
 import az.et.authservice.dto.response.ResponseTokenDto;
+import az.et.authservice.security.JwtUserDetails;
 import az.et.authservice.service.AuthBusinessService;
 import az.et.authservice.service.UserBusinessService;
 import io.swagger.annotations.Api;
@@ -59,7 +60,7 @@ public class AuthController {
     }
 
     @GetMapping("/validate")
-    public String validate() {
+    public Object validate() {
         return userBusinessService.validate();
     }
 }

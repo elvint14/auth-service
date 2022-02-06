@@ -12,6 +12,7 @@ import az.et.authservice.service.UserBusinessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,18 +46,17 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     @SneakyThrows
-    public String validate() {
-        final JwtUserDetails userDetails = (JwtUserDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        return objectMapper.writeValueAsString(
-                CustomJwtUserDetailsFactory.of(
-                        userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getPassword(),
-                        userDetails.getAuthorities()
-                )
-        );
+    public JwtUserDetails validate() {
+        return (JwtUserDetails) (
+                (UsernamePasswordAuthenticationToken) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+        ).getPrincipal();
+//        return CustomJwtUserDetailsFactory.of(
+//                        userDetails.getId(),
+//                        userDetails.getUsername(),
+//                        userDetails.getPassword(),
+//                        userDetails.getAuthorities()
+//                );
     }
 }
