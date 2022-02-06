@@ -1,5 +1,6 @@
 package az.et.authservice.security;
 
+import az.et.authservice.dto.request.JwtUserDetailsDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,11 +36,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
              * olunması Zuul da baş verir. Əgər bu dəyər null-dırsa, deməli belə User yoxdur və ya
              * authenticated məcbur olmayan url-lərə sorğu gəlir.
              */
-            final JwtUserDetails userDetails = objectMapper.readValue(xUser, JwtUserDetails.class);
+            final JwtUserDetailsDto userDetailsDto = objectMapper.readValue(
+                    xUser,
+                    JwtUserDetailsDto.class
+            );
+            final JwtUserDetails jwtUserDetails = JwtUserDetails.create(
+                    userDetailsDto.getId(),
+                    userDetailsDto.getUsername(),
+                    userDetailsDto.getPassword(),
+                    userDetailsDto.getAuthorities()
+            );
             final Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails,
+                    jwtUserDetails,
                     "",
-                    userDetails.getAuthorities()
+                    jwtUserDetails.getAuthorities()
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
