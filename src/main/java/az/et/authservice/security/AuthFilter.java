@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static az.et.authservice.constant.AuthHeader.*;
+
 @Component
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
@@ -26,7 +28,7 @@ public class AuthFilter extends OncePerRequestFilter {
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        final String xUser = httpServletRequest.getHeader(AuthHeader.X_USER);
+        final String xUser = httpServletRequest.getHeader(X_USER);
 
         if (xUser != null) {
             /*
