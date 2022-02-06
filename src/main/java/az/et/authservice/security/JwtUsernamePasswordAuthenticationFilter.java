@@ -26,17 +26,16 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
         try {
-            final UsernamePasswordAuthenticationRequestDto authRequest = new ObjectMapper()
-                    .readValue(
-                            request.getInputStream(),
-                            UsernamePasswordAuthenticationRequestDto.class
-                    );
-            final Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    authRequest.getUsername(),
-                    authRequest.getPassword()
+            final UsernamePasswordAuthenticationRequestDto usernamePasswordAuthenticationRequestDto = new ObjectMapper().readValue(
+                    request.getInputStream(),
+                    UsernamePasswordAuthenticationRequestDto.class
             );
-
-            return authenticationManager.authenticate(authentication);
+            return authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            usernamePasswordAuthenticationRequestDto.getUsername(),
+                            usernamePasswordAuthenticationRequestDto.getPassword()
+                    )
+            );
         } catch (IOException e) {
             throw BaseException.of(ErrorEnum.AUTH_ERROR);
         }
@@ -47,7 +46,8 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) {
-        Jwts.builder()
+        Jwts
+                .builder()
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date());

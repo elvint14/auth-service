@@ -6,14 +6,17 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 @Data
 @Builder
-public class JwtUserDetails implements UserDetails {
+public class JwtUserDetails implements UserDetails, Serializable {
+    private static final long serialVersionUID = 5926468583005150707L;
+
     private Long id;
     private String username;
-    
+
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;

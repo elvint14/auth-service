@@ -1,6 +1,3 @@
-server:
-  port: 8085
-
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
@@ -11,7 +8,22 @@ spring:
       ddl-auto: update
     show-sql: true
 
+server:
+  port: 8085
+  servlet:
+    context-path: /
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+    fetch-registry: true
+
 jwt:
   token:
     private: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANgFoY7iuy9voYrwfCqVLd2WBw9Aus09u+OUbiajl88CByIBaLxiEk/bYKZ3gRza77IJ4AuCpQC8y9qOcuMu1oPdzJJalv4900fs2hliklNeaxKGljgGValibZOfVzZd35FOiMhlJi98EDNynooYwMyboURqjluK0gCabORjVafPAgMBAAECgYBCt9KC//HSH8cj00x2Fmb5BgoeIt7O3t811bUDiAkt7TFoxkijziJbuaSrJUOiNthLA5PH2ky94pGPael/0wp7VBdaxRgc6VhFjBCLDaOuNoIDEDBtjitLyY/u0oPWcQt0vGxBh0z6o/r8aMqvhubUZH7vkyYmKZgPABKOuOnywQJBAPyBvQZgHTq0VvN/bwZW7DIf5hhYtejXMwZ+lyjRgumUK3ympFs36ifxxPtqv/ww5d0r0fYfyyVnltn/Jupw16ECQQDbAq43h/ZucjBsOyvlCCTo7gEPOa3kxXqpPTtkSeqWLcEpjn18+sE2WeVEbwOgGvH/CIMvvwymPpTnU1weI4lvAkBoAUBMifZAIdvWu9yNLexn0P/Dc3aqC0m3GRlF9NYJQ8CNvU3hTKyj+095h0TAqZtkeBIpYHsaUwqtjA0Jb6VBAkEAhxu6OkvIPQ54zOwcAijqDEB3qtrcahthtnIt54qqC4eieG6M/8L52vvOMk+CHw1AaSLpO1VTCmPlHGgSlg06RQJAQouu6epp3vnu9D3XMzGQU9WQHosUiLzlDWsliwvWHEPrqWtSQuMsiqFxLS3PNbkgoNrkXSiD9gT6IVwYmPsQrQ==
     public: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYBaGO4rsvb6GK8HwqlS3dlgcPQLrNPbvjlG4mo5fPAgciAWi8YhJP22Cmd4Ec2u+yCeALgqUAvMvajnLjLtaD3cySWpb+PdNH7NoZYpJTXmsShpY4BlWpYm2Tn1c2Xd+RTojIZSYvfBAzcp6KGMDMm6FEao5bitIAmmzkY1WnzwIDAQAB
+    access-token-validity-time: 3600000
+    refresh-token-validity-time: 86400000

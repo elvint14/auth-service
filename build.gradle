@@ -5,8 +5,12 @@ plugins {
 }
 
 group = 'az.et'
-version = '0.0.1'
+version = '1'
 sourceCompatibility = '11'
+
+jar {
+    baseName 'auth-service'
+}
 
 repositories {
     mavenCentral()
