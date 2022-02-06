@@ -58,9 +58,4 @@ public class AuthController {
                 BaseResponse.ok()
         );
     }
-
-    @GetMapping("/validate")
-    public Object validate() {
-        return userBusinessService.validate();
-    }
 }
