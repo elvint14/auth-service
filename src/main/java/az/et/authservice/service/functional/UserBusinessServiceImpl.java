@@ -6,14 +6,9 @@ import az.et.authservice.dto.request.RequestCreateUserDto;
 import az.et.authservice.entity.RoleEntity;
 import az.et.authservice.entity.UserEntity;
 import az.et.authservice.exception.BaseException;
-import az.et.authservice.security.CustomJwtUserDetailsFactory;
-import az.et.authservice.security.JwtUserDetails;
 import az.et.authservice.service.UserBusinessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,24 +34,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .fullName(requestCreateUserDto.getFullName())
                 .username(requestCreateUserDto.getUsername())
                 .password(passwordEncoder.encode(requestCreateUserDto.getPassword()))
-                .roles(Collections.singleton(RoleEntity.builder().id(1L).build()))
+                .roles(Collections.singletonList(RoleEntity.builder().id(1L).build()))
                 .status(UserStatusEnum.EMAIL_CONFIRMED) //TODO if email service applied turn this into CREATED
                 .build();
-    }
-
-    @Override
-    @SneakyThrows
-    public JwtUserDetails validate() {
-        return (JwtUserDetails) (
-                (UsernamePasswordAuthenticationToken) SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-        ).getPrincipal();
-//        return CustomJwtUserDetailsFactory.of(
-//                        userDetails.getId(),
-//                        userDetails.getUsername(),
-//                        userDetails.getPassword(),
-//                        userDetails.getAuthorities()
-//                );
     }
 }

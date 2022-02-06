@@ -1,6 +1,5 @@
 package az.et.authservice.security;
 
-import az.et.authservice.constant.AuthHeader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static az.et.authservice.constant.AuthHeader.*;
+import static az.et.authservice.constant.AuthHeader.X_USER;
 
 @Component
 @RequiredArgsConstructor
-public class AuthFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
 
@@ -29,7 +28,7 @@ public class AuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         final String xUser = httpServletRequest.getHeader(X_USER);
-
+        System.out.println("X-USER is -> " + xUser);
         if (xUser != null) {
             /*
              * Əgər belə bir User varsa, gəlib bura çıxacaq. Yəni X-User dəyərinin set
@@ -44,7 +43,6 @@ public class AuthFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
